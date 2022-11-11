@@ -1,0 +1,58 @@
+#define Current_sensor A0  //The sensor analog input pin
+#define relay 11
+#define buzzerPin 10
+
+float current;
+int count;
+
+
+void buzzer() {
+  digitalWrite(buzzerPin, LOW);
+  delay(1000);
+  digitalWrite(buzzerPin, HIGH);
+  delay(500);
+  digitalWrite(buzzerPin, LOW);
+  delay(1000);
+  digitalWrite(buzzerPin, HIGH);
+  delay(500);
+  digitalWrite(buzzerPin, LOW);
+  delay(1000);
+  digitalWrite(buzzerPin, HIGH);
+  delay(500);
+ 
+}
+void setup() {
+
+  Serial.begin(9600);
+ 
+  pinMode(Current_sensor, INPUT);
+  pinMode(relay, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+ 
+  digitalWrite(buzzerPin,HIGH);
+  digitalWrite(relay,LOW);
+count=0;
+}
+
+void loop() {
+
+  current = analogRead(Current_sensor);
+  Serial.println(current);
+ 
+  if (current > 650)   {
+    digitalWrite(relay, HIGH);
+    delay(2000);
+    digitalWrite(relay, LOW);
+    count++;
+    Serial.println(count);
+   
+  }
+
+  while (count == 5) {
+    Serial.println("MODE CHANGE");
+    digitalWrite(relay,HIGH);
+    buzzer();
+  }
+  delay(100);  //Modifying or removing the delay will change the way the signal is shown
+               //set it until you get the correct sinewave shap
+}
